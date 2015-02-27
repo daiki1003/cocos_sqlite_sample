@@ -14,6 +14,8 @@ public:
     
     CREATE_FUNC(HelloWorld);
     
+private:
+    sqlite3 *db;
 };
 
 #endif // __HELLOWORLD_SCENE_H__

@@ -23,5 +23,21 @@ bool HelloWorld::init()
 {
     if (!Layer::init()) return false;
     
+    // path for saving db
+    string dbName = "test.db";
+    auto filePath = FileUtils::getInstance()->getWritablePath() + dbName;
+    
+    auto status = sqlite3_open(filePath.c_str(), &db);
+    if(status != SQLITE_OK)
+    {
+        CCLOG("error for opening db.");
+    }
+    else
+    {
+        CCLOG("open successed!");
+    }
+    
+    sqlite3_close(db);
+    
     return true;
 }
