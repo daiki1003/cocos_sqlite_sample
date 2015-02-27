@@ -16,6 +16,7 @@ public:
     
 private:
     sqlite3 *db;
+    char* errorMessage;
 };
 
 #endif // __HELLOWORLD_SCENE_H__

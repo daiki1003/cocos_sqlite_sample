@@ -37,7 +37,12 @@ bool HelloWorld::init()
         CCLOG("open successed!");
     }
     
+    // create table
+    auto create_table = "create table user (id integer, age integer)";
+    status = sqlite3_exec(db, create_table, nullptr, nullptr, &errorMessage);
+    if(status != SQLITE_OK) CCLOG("create: %s", errorMessage);
+
     sqlite3_close(db);
-    
+
     return true;
 }
