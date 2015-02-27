@@ -3,6 +3,11 @@
 USING_NS_CC;
 using namespace std;
 
+HelloWorld::HelloWorld()
+    : db(nullptr)
+    , errorMessage()
+{}
+
 Scene* HelloWorld::createScene()
 {
     // 'scene' is an autorelease object
@@ -56,3 +61,5 @@ bool HelloWorld::init()
 
     return true;
 }
+
+HelloWorld::~HelloWorld() {}

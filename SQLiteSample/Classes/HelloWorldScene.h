@@ -8,6 +8,9 @@
 class HelloWorld : public cocos2d::Layer
 {
 public:
+    HelloWorld();
+    ~HelloWorld();
+    
     static cocos2d::Scene* createScene();
 
     virtual bool init();
