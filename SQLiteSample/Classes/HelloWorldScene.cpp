@@ -42,6 +42,11 @@ bool HelloWorld::init()
     status = sqlite3_exec(db, create_table, nullptr, nullptr, &errorMessage);
     if(status != SQLITE_OK) CCLOG("create: %s", errorMessage);
 
+    // insert row
+    auto insert = "insert into user(id, age) values (1, 15)";
+    status = sqlite3_exec(db, insert, nullptr, nullptr, &errorMessage);
+    if(status != SQLITE_OK) CCLOG("insert: %s", errorMessage);
+
     sqlite3_close(db);
 
     return true;
