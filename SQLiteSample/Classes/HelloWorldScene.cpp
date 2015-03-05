@@ -23,12 +23,6 @@ Scene* HelloWorld::createScene()
     return scene;
 }
 
-static int callback(void *_, int argc, char **argv, char **columnName){
-    for(int i=0; i<argc; i++)
-        printf("%s = %s\n", columnName[i], argv[i] ? argv[i] : "null");
-    return SQLITE_OK;
-}
-
 // on "init" you need to initialize your instance
 bool HelloWorld::init()
 {
@@ -64,9 +58,27 @@ bool HelloWorld::init()
     if(status != SQLITE_OK) CCLOG("update: %s", errorMessage);
     
     // select row(s)
+    sqlite3_stmt* statement = nullptr;
     auto select = "select * from user where id = 1";
-    status = sqlite3_exec(db, select, callback, nullptr, &errorMessage);
-    if(status != SQLITE_OK) CCLOG("select: %s", errorMessage);
+    if(sqlite3_prepare_v2(db, select, -1, &statement, nullptr) != SQLITE_OK) CCLOG("prepare: %s", errorMessage);
+    else
+    {
+        if (sqlite3_step(statement) == SQLITE_ROW)
+        {
+            for (int i = 0; i < sqlite3_column_count(statement); i++)
+            {
+                string name = sqlite3_column_name(statement, i);
+                int columnType = sqlite3_column_type(statement, i);
+                if (columnType == SQLITE_INTEGER)
+                {
+                    CCLOG("%s = %d", name.c_str(), sqlite3_column_int(statement, i));
+                    continue;
+                }
+            }
+        }
+    }
+    sqlite3_reset(statement);
+    sqlite3_finalize(statement);
     
     sqlite3_close(db);
 
