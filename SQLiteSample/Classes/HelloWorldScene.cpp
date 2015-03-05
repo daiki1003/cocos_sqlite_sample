@@ -23,6 +23,12 @@ Scene* HelloWorld::createScene()
     return scene;
 }
 
+static int callback(void *_, int argc, char **argv, char **columnName){
+    for(int i=0; i<argc; i++)
+        printf("%s = %s\n", columnName[i], argv[i] ? argv[i] : "null");
+    return SQLITE_OK;
+}
+
 // on "init" you need to initialize your instance
 bool HelloWorld::init()
 {
@@ -56,6 +62,11 @@ bool HelloWorld::init()
     auto update = "update user set age = 20 where id = 1";
     status = sqlite3_exec(db, update, nullptr, nullptr, &errorMessage);
     if(status != SQLITE_OK) CCLOG("update: %s", errorMessage);
+    
+    // select row(s)
+    auto select = "select * from user where id = 1";
+    status = sqlite3_exec(db, select, callback, nullptr, &errorMessage);
+    if(status != SQLITE_OK) CCLOG("select: %s", errorMessage);
     
     sqlite3_close(db);
 
